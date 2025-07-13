@@ -1,17 +1,9 @@
 import { memo } from "react";
 import { Handle, Position } from "@xyflow/react";
-import { MessageSquareIcon } from "lucide-react";
+import { MessageSquareIcon, MessageCircle } from "lucide-react";
+import type { MessageNodeProps, PanelNodeType } from "../types/nodes";
 
-type NodeData = {
-  label: string
-}
-
-interface MessageNodeProps {
-  data: NodeData, 
-  isConnectable: boolean
-}
-
-export default memo(({ data, isConnectable }: MessageNodeProps) => {
+const MessageNode = memo(({ data, isConnectable }: MessageNodeProps) => {
   return (
     <>
       <Handle
@@ -27,9 +19,7 @@ export default memo(({ data, isConnectable }: MessageNodeProps) => {
             Send Message
           </span>
         </div>
-        <div className="message-body">
-            {data.label}
-        </div>
+        <div className="message-body">{data.message}</div>
       </div>
       <Handle
         type="source"
@@ -39,3 +29,18 @@ export default memo(({ data, isConnectable }: MessageNodeProps) => {
     </>
   );
 });
+
+
+// Add the node type to register it on the react flow builder
+const NODES: PanelNodeType[] = [
+  {
+    id: 'message', 
+    title: 'Message', 
+    IconComponent: MessageCircle, 
+    component: MessageNode
+  }
+]
+const nodeTypes = {}
+NODES.reduce((acc, cur) => acc[cur.id] = cur.component, nodeTypes)
+
+export { MessageNode, NODES,  nodeTypes };

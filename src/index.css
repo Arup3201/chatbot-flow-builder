@@ -1,3 +1,4 @@
+@import "tailwindcss";
 @import url('./xy-theme.css');
 
 html,
@@ -8,8 +9,12 @@ body {
 }
 
 #app {
-  width: 100vw;
-  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  background-color: #ddd;
 }
 
 .wrapper {

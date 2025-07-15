@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { Handle, Position } from "@xyflow/react";
-import { MessageSquareIcon, MessageCircle } from "lucide-react";
+import { MessageCircleIcon, MessageCircle } from "lucide-react";
 import type { MessageNodeProps, PanelNodeType } from "../types/nodes";
 
 const MessageNode = memo(({ data, isConnectable }: MessageNodeProps) => {
@@ -12,12 +12,10 @@ const MessageNode = memo(({ data, isConnectable }: MessageNodeProps) => {
         onConnect={(params) => console.log("handle onConnect", params)}
         isConnectable={isConnectable}
       />
-      <div className="message-node">
-        <div className="message-head">
-          <span>
-            <MessageSquareIcon size={24} />
+      <div className="flex flex-col text-sm border-1 border-gray-500">
+        <div className="flex items-center text-gray-200 gap-1 bg-green-800 p-1">
+            <MessageCircleIcon size={12} />
             Send Message
-          </span>
         </div>
         <div className="message-body">{data.message}</div>
       </div>

@@ -19,19 +19,19 @@ const FlowBuilder = ({ onDrop, ...props }) => {
     setDraggingNodeType(active.id);
   };
 
-  const handleNodeDrop = ({ activatorEvent, over }) => {
+  const handleNodeDrop = (event) => {
+    const { over } = event;
+
     if (!over) return;
 
-    const { clientX, clientY } = activatorEvent;
-
-    console.log(clientX, clientY);
-
+    const pointerPosition = event.activatorEvent || event.pointerPosition;
+  
     const id = getId();
     const newNode: Node = {
       id,
       position: screenToFlowPosition({
-        x: clientX,
-        y: clientY,
+        x: pointerPosition.pageX,
+        y: pointerPosition.pageY,
       }),
       type: "message",
       data: { message: "text message" },

@@ -7,6 +7,7 @@ import {
   useEdgesState,
   addEdge,
   ReactFlowProvider,
+  MarkerType,
 } from "@xyflow/react";
 import { Button } from "./components/ui/button";
 import FlowBuilder from "./components/flow-builder";
@@ -36,7 +37,15 @@ function App() {
         }
 
         // else add this edge
-        return addEdge(params, eds);
+        return addEdge(
+          {
+            ...params,
+            markerEnd: {
+              type: MarkerType.ArrowClosed,
+            },
+          },
+          eds
+        );
       }),
     []
   );

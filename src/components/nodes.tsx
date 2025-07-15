@@ -12,12 +12,15 @@ const MessageNode = memo(({ data, isConnectable }: MessageNodeProps) => {
         onConnect={(params) => console.log("handle onConnect", params)}
         isConnectable={isConnectable}
       />
-      <div className="flex flex-col text-sm border-1 border-gray-500">
-        <div className="flex items-center text-gray-200 gap-1 bg-green-800 p-1">
-            <MessageCircleIcon size={12} />
+      <div className="flex flex-col min-w-[200px] text-sm shadow-md rounded-md">
+        <div className="flex items-center justify-between text-gray-800 font-medium bg-green-200 p-1 rounded-t-md px-2">
+          <span className="flex items-center gap-2">
+            <MessageCircleIcon size={14} />
             Send Message
+          </span>
+          <img src={"whatsapp.svg"} height={14} width={14} />
         </div>
-        <div className="message-body">{data.message}</div>
+        <div className="p-2 bg-white rounded-b-md text-sm text-gray-800">{data.message}</div>
       </div>
       <Handle
         type="source"
@@ -28,17 +31,16 @@ const MessageNode = memo(({ data, isConnectable }: MessageNodeProps) => {
   );
 });
 
-
 // Add the node type to register it on the react flow builder
 const NODES: PanelNodeType[] = [
   {
-    id: 'message', 
-    title: 'Message', 
-    IconComponent: MessageCircle, 
-    component: MessageNode
-  }
-]
-const nodeTypes = {}
-NODES.reduce((acc, cur) => acc[cur.id] = cur.component, nodeTypes)
+    id: "message",
+    title: "Message",
+    IconComponent: MessageCircle,
+    component: MessageNode,
+  },
+];
+const nodeTypes = {};
+NODES.reduce((acc, cur) => (acc[cur.id] = cur.component), nodeTypes);
 
-export { MessageNode, NODES,  nodeTypes };
+export { MessageNode, NODES, nodeTypes };

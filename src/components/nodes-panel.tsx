@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 
 const NodesPanel = () => {
   return (
-    <div className="p-2 flex gap-2 flex-wrap border-2 border-l-gray-500">
+    <div className="p-2 grid grid-cols-2 grid-flow-row gap-2 border-2 border-l-gray-500">
       {NODES.map((nd) => (
         <DraggablePanelNode
           id={nd.id}
@@ -36,7 +36,7 @@ const DraggablePanelNode = ({
       {...attributes}
       {...listeners}
       ref={setNodeRef}
-      className="px-4 py-2 flex flex-col gap-2 items-center border-2 text-blue-800 border-blue-800 h-min cursor-pointer hover:bg-gray-100 rounded-md"
+      className="px-6 py-2 flex flex-col gap-2 items-center border-2 text-blue-800 border-blue-800 h-min cursor-pointer hover:bg-gray-100 rounded-md"
     >
       <IconComponent />
       {title}
@@ -49,7 +49,7 @@ const PanelNode = ({ IconComponent, title, overlay = false, ...props }) => {
     <div
       {...props}
       className={cn(
-        "px-4 py-2 flex flex-col gap-2 items-center border-2 text-blue-800 border-blue-800 h-min cursor-pointer hover:bg-gray-100 rounded-md",
+        "px-6 py-2 flex flex-col gap-2 items-center border-2 text-blue-800 border-blue-800 h-min cursor-pointer hover:bg-gray-100 rounded-md",
         overlay ? "opacity-70 border-2" : ""
       )}
     >

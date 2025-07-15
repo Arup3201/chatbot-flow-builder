@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 
 const NodesPanel = () => {
   return (
-    <div className="p-2 grid grid-cols-2 grid-flow-row gap-2 border-2 border-l-gray-500">
+    <div className="p-2 grid grid-cols-2 grid-flow-row gap-2 border-2 border-l-gray-200">
       {NODES.map((nd) => (
         <DraggablePanelNode
           id={nd.id}

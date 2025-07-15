@@ -20,7 +20,9 @@ const MessageNode = memo(({ data, isConnectable }: MessageNodeProps) => {
           </span>
           <img src={"whatsapp.svg"} height={14} width={14} />
         </div>
-        <div className="p-2 bg-white rounded-b-md text-sm text-gray-800">{data.message}</div>
+        <div className="p-2 bg-white rounded-b-md text-sm text-gray-800">
+          {data.message}
+        </div>
       </div>
       <Handle
         type="source"
@@ -36,6 +38,16 @@ const NODES: PanelNodeType[] = [
   {
     id: "message",
     title: "Message",
+    data: {
+      message: "Text message",
+    },
+    settings: [
+      {
+        field: "message",
+        title: "Message",
+        type: "text",
+      },
+    ],
     IconComponent: MessageCircle,
     component: MessageNode,
   },

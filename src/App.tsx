@@ -9,6 +9,7 @@ import {
   ReactFlowProvider,
   MarkerType,
 } from "@xyflow/react";
+import type { SettingType } from "./types/nodes";
 import { Button } from "./components/ui/button";
 import FlowBuilder from "./components/flow-builder";
 import "@xyflow/react/dist/style.css";
@@ -54,6 +55,31 @@ function App() {
     console.log("TODO");
   }
 
+  function handleSettingsSave(
+    nodeId: string,
+    nodeData,
+    settings: SettingType[]
+  ) {
+    setNodes((ndSnapshot) => {
+      const newSnapshot = [...ndSnapshot];
+      const nodeIndex = newSnapshot.findIndex((nd) => nd.id === nodeId);
+      if (nodeIndex === -1) {
+        alert("Node not registed in the store...");
+        return newSnapshot;
+      }
+
+      const newData = {};
+      settings.forEach(
+        (setting) => (newData[setting.field] = nodeData[setting.field])
+      );
+      newSnapshot[nodeIndex] = {
+        ...newSnapshot[nodeIndex],
+        data: { ...newData },
+      };
+      return newSnapshot;
+    });
+  }
+
   return (
     <div className="flex flex-col gap-1">
       <header className="flex justify-end p-2 bg-gray-50">
@@ -68,6 +94,7 @@ function App() {
             onNodesChange={onNodesChange}
             onEdgesChange={onEdgesChange}
             onConnect={onConnect}
+            onSettingsSave={handleSettingsSave}
           />
         </ReactFlowProvider>
       </main>

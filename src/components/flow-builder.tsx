@@ -1,16 +1,13 @@
 import { useState } from "react";
 import { useDroppable, DndContext, DragOverlay } from "@dnd-kit/core";
-import {
-  type Node,
-  Background,
-  ReactFlow,
-  useReactFlow,
-} from "@xyflow/react";
+import { type Node, Background, ReactFlow, useReactFlow } from "@xyflow/react";
 import NodesPanel, { PanelNode } from "./nodes-panel";
 import { NODES, nodeTypes } from "./nodes";
+import SettingsPanel from "./settings-panel";
 
-const FlowBuilder = ({ onDrop, ...props }) => {
+const FlowBuilder = ({ onDrop, onSettingsSave, ...props }) => {
   const [draggingNodeType, setDraggingNodeType] = useState(null);
+  const [selectedNode, setSelectedNode] = useState<Node | null>(null);
   const { screenToFlowPosition } = useReactFlow();
 
   const activePanelNode = NODES.find((nd) => nd.id === draggingNodeType);
@@ -24,8 +21,13 @@ const FlowBuilder = ({ onDrop, ...props }) => {
 
     if (!over) return;
 
+    if (!activePanelNode) {
+      alert("Invalid node type...");
+      return;
+    }
+
     const pointerPosition = event.activatorEvent || event.pointerPosition;
-  
+
     const id = getId();
     const newNode: Node = {
       id,
@@ -33,8 +35,8 @@ const FlowBuilder = ({ onDrop, ...props }) => {
         x: pointerPosition.pageX,
         y: pointerPosition.pageY,
       }),
-      type: "message",
-      data: { message: "text message" },
+      type: activePanelNode.id,
+      data: activePanelNode.data,
       origin: [0.5, 0.0],
     };
 
@@ -44,8 +46,21 @@ const FlowBuilder = ({ onDrop, ...props }) => {
 
   return (
     <DndContext onDragStart={handleDragStart} onDragEnd={handleNodeDrop}>
-      <Canvas {...props} />
-      <NodesPanel />
+      <Canvas
+        {...props}
+        onNodeClick={(_, node) => setSelectedNode(node)}
+      />
+      {selectedNode ? (
+        <SettingsPanel
+          nodeId={selectedNode.id}
+          settings={NODES.find((node) => node.id === selectedNode.type)?.settings}
+          nodeData={selectedNode.data}
+          onClose={() => setSelectedNode(null)}
+          onSave={onSettingsSave}
+        />
+      ) : (
+        <NodesPanel />
+      )}
       <DragOverlay>
         {activePanelNode && (
           <PanelNode
@@ -62,7 +77,14 @@ const FlowBuilder = ({ onDrop, ...props }) => {
 let id = 1;
 const getId = () => `${id++}`;
 
-const Canvas = ({ nodes, edges, onNodesChange, onEdgesChange, onConnect }) => {
+const Canvas = ({
+  nodes,
+  edges,
+  onNodesChange,
+  onEdgesChange,
+  onConnect,
+  onNodeClick,
+}) => {
   const { setNodeRef } = useDroppable({
     id: "canvas",
   });
@@ -82,6 +104,7 @@ const Canvas = ({ nodes, edges, onNodesChange, onEdgesChange, onConnect }) => {
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
+        onNodeClick={onNodeClick}
       >
         <Background />
       </ReactFlow>

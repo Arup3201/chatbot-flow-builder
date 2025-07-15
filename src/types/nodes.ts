@@ -1,12 +1,20 @@
-type PanelNodeType = {
-  id: string;
-  IconComponent: React.ElementType
+type SettingType = {
+  field: string;
   title: string;
-  component: React.ElementType
-}
+  type: "text" | "number";
+};
 
 type MessageDataType = {
   message: string;
+}
+
+type PanelNodeType = {
+  id: string;
+  IconComponent: React.ElementType;
+  title: string;
+  settings: SettingType[];
+  data: MessageDataType;
+  component: React.ElementType;
 };
 
 interface MessageNodeProps {
@@ -14,4 +22,4 @@ interface MessageNodeProps {
   isConnectable: boolean;
 }
 
-export type { PanelNodeType, MessageDataType, MessageNodeProps };
+export type { SettingType, PanelNodeType, MessageDataType, MessageNodeProps };

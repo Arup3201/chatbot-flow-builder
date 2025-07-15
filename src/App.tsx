@@ -10,7 +10,7 @@ import {
 } from "@xyflow/react";
 import { Button } from "./components/ui/button";
 import FlowBuilder from "./components/flow-builder";
-import '@xyflow/react/dist/style.css';
+import "@xyflow/react/dist/style.css";
 
 const initialNodes: Node[] = [
   {
@@ -24,8 +24,20 @@ const initialNodes: Node[] = [
 function App() {
   const [nodes, setNodes, onNodesChange] = useNodesState<Node>(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
+
   const onConnect: OnConnect = useCallback(
-    (params) => setEdges((eds) => addEdge(params, eds)),
+    (params) =>
+      setEdges((eds) => {
+        // check if there is already an edge coming from this source
+        const edge = eds.find((ed) => ed.source === params.source);
+        if (edge) {
+          alert('One node can"t have more than one source...');
+          return eds;
+        }
+
+        // else add this edge
+        return addEdge(params, eds);
+      }),
     []
   );
 

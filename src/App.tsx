@@ -1,57 +1,56 @@
-import { act, useRef } from "react";
-import { DndContext, DragOverlay } from "@dnd-kit/core";
+import { useCallback } from "react";
+import {
+  type Node,
+  type Edge,
+  type OnConnect,
+  useNodesState,
+  useEdgesState,
+  addEdge,
+  ReactFlowProvider,
+} from "@xyflow/react";
 import { Button } from "./components/ui/button";
 import FlowBuilder from "./components/flow-builder";
-import NodesPanel, { PanelNode } from "./components/nodes-panel";
-import { NODES } from "./components/nodes";
+import '@xyflow/react/dist/style.css';
+
+const initialNodes: Node[] = [
+  {
+    id: "0",
+    type: "message",
+    data: { message: "Text Message" },
+    position: { x: 0, y: 50 },
+  },
+];
 
 function App() {
-  const draggingNode = useRef(null);
+  const [nodes, setNodes, onNodesChange] = useNodesState<Node>(initialNodes);
+  const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
+  const onConnect: OnConnect = useCallback(
+    (params) => setEdges((eds) => addEdge(params, eds)),
+    []
+  );
 
   function handleSaveFlow() {
     console.log("TODO");
   }
 
-  const handleDragStart = ({ active }) => {
-    draggingNode.current = active.id;
-  };
-
-  const trackNodePosition = ({ over }) => {
-    console.log("Tracking: ", over);
-  };
-
-  const handleNodeDrop = ({ over }) => {
-    console.log("Dropped: ", over);
-    draggingNode.current = null;
-  };
-
-  const activePanelNode = NODES.find((nd) => nd.id === draggingNode.current);
-
   return (
-    <DndContext
-      onDragStart={handleDragStart}
-      onDragOver={trackNodePosition}
-      onDragEnd={handleNodeDrop}
-    >
-      <div className="flex flex-col gap-1">
-        <header className="flex justify-end p-2 bg-gray-50">
-          <Button onClick={() => handleSaveFlow()}>Save</Button>
-        </header>
-        <main className="flex">
-          <FlowBuilder />
-          <NodesPanel />
-        </main>
-      </div>
-      <DragOverlay>
-        {activePanelNode && (
-          <PanelNode
-            title={activePanelNode.title}
-            IconComponent={activePanelNode.IconComponent}
-            overlay={true}
+    <div className="flex flex-col gap-1">
+      <header className="flex justify-end p-2 bg-gray-50">
+        <Button onClick={() => handleSaveFlow()}>Save</Button>
+      </header>
+      <main className="flex">
+        <ReactFlowProvider>
+          <FlowBuilder
+            nodes={nodes}
+            edges={edges}
+            onDrop={(nd) => setNodes((nds) => nds.concat(nd))}
+            onNodesChange={onNodesChange}
+            onEdgesChange={onEdgesChange}
+            onConnect={onConnect}
           />
-        )}
-      </DragOverlay>
-    </DndContext>
+        </ReactFlowProvider>
+      </main>
+    </div>
   );
 }
 

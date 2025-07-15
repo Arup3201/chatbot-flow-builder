@@ -8,6 +8,15 @@
   height: 100%;
 }
 
+.react-flow__node.selectable {
+  border-width: 2px;
+  border-radius: calc(var(--radius) - 2px);
+  border-color: transparent;
+}
+
+.react-flow__node.selectable:focus {
+  border-color: var(--color-blue-500);
+}
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);

@@ -9,7 +9,7 @@ import {
   ReactFlowProvider,
   MarkerType,
 } from "@xyflow/react";
-import type { SettingType } from "./types/nodes";
+import type { NodeDataType, SettingType } from "./types/nodes";
 import { Button } from "./components/ui/button";
 import FlowBuilder from "./components/flow-builder";
 import "@xyflow/react/dist/style.css";
@@ -57,9 +57,14 @@ function App() {
 
   function handleSettingsSave(
     nodeId: string,
-    nodeData,
-    settings: SettingType[]
+    nodeData: NodeDataType,
+    settings: SettingType[] | undefined
   ) {
+    if(!settings) {
+      alert("No configurations for this node to save");
+      return;
+    }
+
     setNodes((ndSnapshot) => {
       const newSnapshot = [...ndSnapshot];
       const nodeIndex = newSnapshot.findIndex((nd) => nd.id === nodeId);
@@ -68,7 +73,7 @@ function App() {
         return newSnapshot;
       }
 
-      const newData = {};
+      const newData = {} as NodeDataType;
       settings.forEach(
         (setting) => (newData[setting.field] = nodeData[setting.field])
       );
@@ -90,7 +95,7 @@ function App() {
           <FlowBuilder
             nodes={nodes}
             edges={edges}
-            onDrop={(nd) => setNodes((nds) => nds.concat(nd))}
+            onDrop={(nd: Node) => setNodes((nds) => nds.concat(nd))}
             onNodesChange={onNodesChange}
             onEdgesChange={onEdgesChange}
             onConnect={onConnect}

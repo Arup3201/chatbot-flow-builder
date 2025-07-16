@@ -1,12 +1,13 @@
+type MessageDataType = {
+  text: string;
+};
+type NodeDataType = MessageDataType;
+
 type SettingType = {
-  field: string;
+  field: keyof NodeDataType;
   title: string;
   type: "text" | "number";
 };
-
-type MessageDataType = {
-  text: string;
-}
 
 type PanelNodeType = {
   id: string;
@@ -22,4 +23,10 @@ interface MessageNodeProps {
   isConnectable: boolean;
 }
 
-export type { SettingType, PanelNodeType, MessageDataType, MessageNodeProps };
+export type {
+  SettingType,
+  NodeDataType,
+  PanelNodeType,
+  MessageDataType,
+  MessageNodeProps,
+};

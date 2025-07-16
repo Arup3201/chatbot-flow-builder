@@ -2,23 +2,27 @@ import { useState, useEffect } from "react";
 import { X, Save } from "lucide-react";
 import { NODES } from "./nodes";
 
-export default ({ node, settings, onClose, onSave }) => {
-  const [formData, setFormData] = useState({});
+import type { SettingsPanelProps } from "@/types/settings-panel";
+import type { SettingType } from "@/types/nodes";
+import type { NodeDataType } from "@/types/nodes";
+
+export default ({ node, settings, onClose, onSave }: SettingsPanelProps) => {
+  const [formData, setFormData] = useState<NodeDataType>({} as NodeDataType);
   const [hasChanges, setHasChanges] = useState(false);
 
   // Initialize form data with current node data
   useEffect(() => {
     if (node.data && settings) {
-      const initialData = {};
+      const initialData = {} as NodeDataType;
       settings.forEach((setting) => {
-        initialData[setting.field] = node.data[setting.field] || "";
+        initialData[setting.field] = node.data[setting.field];
       });
       setFormData(initialData);
     }
   }, [node.data, settings]);
 
   // Handle input changes
-  const handleInputChange = (field, value) => {
+  const handleInputChange = (field: string, value: string | number) => {
     setFormData((prev) => {
       const newData = { ...prev, [field]: value };
       setHasChanges(true);
@@ -50,8 +54,8 @@ export default ({ node, settings, onClose, onSave }) => {
   };
 
   // Render input based on setting type
-  const renderInput = (setting) => {
-    const value = formData[setting.field] || "";
+  const renderInput = (setting: SettingType) => {
+    const value = formData[setting.field as keyof NodeDataType] || "";
 
     switch (setting.type) {
       case "text":
@@ -105,47 +109,49 @@ export default ({ node, settings, onClose, onSave }) => {
   }
 
   return (
-      <div className="border-l-2 border-l-gray-200">
-        {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-200">
-          <h3 className="text-lg font-semibold text-gray-900">{NODES.find(nd => nd.id===node.type)?.title}</h3>
-          <button
-            onClick={handleClose}
-            className="text-gray-400 hover:text-gray-600 transition-colors"
-          >
-            <X size={24} />
-          </button>
-        </div>
+    <div className="border-l-2 border-l-gray-200">
+      {/* Header */}
+      <div className="flex items-center justify-between p-6 border-b border-gray-200">
+        <h3 className="text-lg font-semibold text-gray-900">
+          {NODES.find((nd) => nd.id === node.type)?.title}
+        </h3>
+        <button
+          onClick={handleClose}
+          className="text-gray-400 hover:text-gray-600 transition-colors"
+        >
+          <X size={24} />
+        </button>
+      </div>
 
-        {/* Content */}
-        <div className="p-6 overflow-y-auto max-h-[calc(90vh-140px)]">
-          <div className="space-y-6">
-            {settings.map((setting) => (
-              <div key={setting.field} className="space-y-2">
-                <label className="block text-sm font-medium text-gray-700">
-                  {setting.title}
-                </label>
-                {renderInput(setting)}
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Footer */}
-        <div className="flex items-center justify-end gap-3 p-6 border-t border-gray-200">
-          <button
-            onClick={handleSave}
-            disabled={!hasChanges}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
-              hasChanges
-                ? "bg-blue-500 hover:bg-blue-600 text-white"
-                : "bg-gray-300 text-gray-500 cursor-not-allowed"
-            }`}
-          >
-            <Save size={16} />
-            Save Changes
-          </button>
+      {/* Content */}
+      <div className="p-6 overflow-y-auto max-h-[calc(90vh-140px)]">
+        <div className="space-y-6">
+          {settings.map((setting) => (
+            <div key={setting.field} className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">
+                {setting.title}
+              </label>
+              {renderInput(setting)}
+            </div>
+          ))}
         </div>
       </div>
+
+      {/* Footer */}
+      <div className="flex items-center justify-end gap-3 p-6 border-t border-gray-200">
+        <button
+          onClick={handleSave}
+          disabled={!hasChanges}
+          className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+            hasChanges
+              ? "bg-blue-500 hover:bg-blue-600 text-white"
+              : "bg-gray-300 text-gray-500 cursor-not-allowed"
+          }`}
+        >
+          <Save size={16} />
+          Save Changes
+        </button>
+      </div>
+    </div>
   );
 };

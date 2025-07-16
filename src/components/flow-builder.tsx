@@ -1,22 +1,23 @@
 import { useState } from "react";
-import { useDroppable, DndContext, DragOverlay } from "@dnd-kit/core";
+import { useDroppable, DndContext, DragOverlay, type DragStartEvent, type DragEndEvent } from "@dnd-kit/core";
 import { type Node, Background, ReactFlow, useReactFlow } from "@xyflow/react";
 import NodesPanel, { PanelNode } from "./nodes-panel";
 import { NODES, nodeTypes } from "./nodes";
 import SettingsPanel from "./settings-panel";
+import type { CanvasProps, FlowBuilderProps } from "@/types/flow-builder";
 
-const FlowBuilder = ({ onDrop, onSettingsSave, ...props }) => {
+const FlowBuilder = ({ onDrop, onSettingsSave, ...props }: FlowBuilderProps) => {
   const [draggingNodeType, setDraggingNodeType] = useState(null);
   const [selectedNode, setSelectedNode] = useState<Node | null>(null);
   const { screenToFlowPosition } = useReactFlow();
 
   const activePanelNode = NODES.find((nd) => nd.id === draggingNodeType);
 
-  const handleDragStart = ({ active }) => {
-    setDraggingNodeType(active.id);
+  const handleDragStart = ({ active }: DragStartEvent) => {
+    setDraggingNodeType(active.data.current?.type);
   };
 
-  const handleNodeDrop = (event) => {
+  const handleNodeDrop = (event: DragEndEvent) => {
     const { over } = event;
 
     if (!over) return;
@@ -26,14 +27,12 @@ const FlowBuilder = ({ onDrop, onSettingsSave, ...props }) => {
       return;
     }
 
-    const pointerPosition = event.activatorEvent || event.pointerPosition;
-
     const id = getId();
     const newNode: Node = {
       id,
       position: screenToFlowPosition({
-        x: pointerPosition.pageX,
-        y: pointerPosition.pageY,
+        x: over.rect.left,
+        y: over.rect.top,
       }),
       type: activePanelNode.id,
       data: activePanelNode.data,
@@ -83,7 +82,7 @@ const Canvas = ({
   onEdgesChange,
   onConnect,
   onNodeClick,
-}) => {
+}: CanvasProps) => {
   const { setNodeRef } = useDroppable({
     id: "canvas",
   });

@@ -110,7 +110,6 @@ export default ({ node, settings, onClose, onSave }: SettingsPanelProps) => {
 
   return (
     <div className="border-l-2 border-l-gray-200">
-      {/* Header */}
       <div className="flex items-center justify-between p-6 border-b border-gray-200">
         <h3 className="text-lg font-semibold text-gray-900">
           {NODES.find((nd) => nd.id === node.type)?.title}
@@ -123,7 +122,6 @@ export default ({ node, settings, onClose, onSave }: SettingsPanelProps) => {
         </button>
       </div>
 
-      {/* Content */}
       <div className="p-6 overflow-y-auto max-h-[calc(90vh-140px)]">
         <div className="space-y-6">
           {settings.map((setting) => (
@@ -137,7 +135,6 @@ export default ({ node, settings, onClose, onSave }: SettingsPanelProps) => {
         </div>
       </div>
 
-      {/* Footer */}
       <div className="flex items-center justify-end gap-3 p-6 border-t border-gray-200">
         <button
           onClick={handleSave}

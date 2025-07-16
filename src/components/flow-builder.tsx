@@ -5,6 +5,7 @@ import NodesPanel, { PanelNode } from "./nodes-panel";
 import { NODES, nodeTypes } from "./nodes";
 import SettingsPanel from "./settings-panel";
 import type { CanvasProps, FlowBuilderProps } from "@/types/flow-builder";
+import { getId } from "@/utils/generate-id";
 
 const FlowBuilder = ({ onDrop, onSettingsSave, ...props }: FlowBuilderProps) => {
   const [draggingNodeType, setDraggingNodeType] = useState(null);
@@ -71,9 +72,6 @@ const FlowBuilder = ({ onDrop, onSettingsSave, ...props }: FlowBuilderProps) => 
     </DndContext>
   );
 };
-
-let id = 1;
-const getId = () => `${id++}`;
 
 const Canvas = ({
   nodes,

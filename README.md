@@ -1,69 +1,22 @@
-# React + TypeScript + Vite
+# Chatbot Flow Builder
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Link: https://chatbot-flow-builder-wine.vercel.app/
 
-Currently, two official plugins are available:
+## Screens
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+![Screen with some nodes](./screens/screen1.png)
 
-## Expanding the ESLint configuration
+![Screen with panel settings](./screens/screen2.png)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+![Can't save flow](./screens/screen3.png)
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Todo:
+1. Replace alerts with toasts
+2. After clicking on a node, when I click outside of it - settings panel should close
+3. Delete a node by pressing `Delete`
+4. Delete an edge by pressing `Delete`
+5. Data type need to be more dynamic to allow future addition of different nodes
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Bugs:
+1. Drop position is not correct
+2. Consecutive selection of different nodes does not change the settings panel content sometimes

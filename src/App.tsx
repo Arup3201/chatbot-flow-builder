@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import {
   type Node,
   type Edge,
@@ -14,18 +14,17 @@ import { Button } from "./components/ui/button";
 import FlowBuilder from "./components/flow-builder";
 import "@xyflow/react/dist/style.css";
 
-const initialNodes: Node[] = [
-  {
-    id: "0",
-    type: "message",
-    data: { text: "Text Message" },
-    position: { x: 0, y: 50 },
-  },
-];
-
 function App() {
-  const [nodes, setNodes, onNodesChange] = useNodesState<Node>(initialNodes);
+  const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
+
+  useEffect(() => {
+    const nodes = JSON.parse(localStorage.getItem('nodes') || '[]')
+    setNodes(nodes);
+
+    const edges = JSON.parse(localStorage.getItem('edges') || '[]')
+    setEdges(edges);
+  }, [])
 
   const onConnect: OnConnect = useCallback(
     (params) =>
@@ -52,7 +51,17 @@ function App() {
   );
 
   function handleSaveFlow() {
-    console.log("TODO");
+    if(nodes.length > 1) {
+      // if not every node is part of atleast one edge
+      if(!nodes.every(node => edges.find(ed => ed.source===node.id || ed.target===node.id))) {
+        alert("Isolated edges are not allowed");
+        return;
+      }
+    }
+
+    localStorage.setItem('nodes', JSON.stringify(nodes));
+    localStorage.setItem('edges', JSON.stringify(edges));
+    alert("Flow saved");
   }
 
   function handleSettingsSave(

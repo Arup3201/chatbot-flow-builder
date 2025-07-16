@@ -15,7 +15,7 @@ export default ({ node, settings, onClose, onSave }: SettingsPanelProps) => {
     if (node.data && settings) {
       const initialData = {} as NodeDataType;
       settings.forEach((setting) => {
-        initialData[setting.field] = node.data[setting.field];
+        initialData[setting.field] = node.data[setting.field] as string; // TODO: should be dynamic type
       });
       setFormData(initialData);
     }

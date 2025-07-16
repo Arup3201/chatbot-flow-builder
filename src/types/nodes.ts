@@ -1,7 +1,9 @@
+import type { NodeProps } from "@xyflow/react";
+
 type MessageDataType = {
   text: string;
 };
-type NodeDataType = MessageDataType;
+type NodeDataType = MessageDataType; // more node data types can be added
 
 type SettingType = {
   field: keyof NodeDataType;
@@ -9,19 +11,19 @@ type SettingType = {
   type: "text" | "number";
 };
 
+interface MessageNodeProps extends NodeProps {
+  data: MessageDataType;
+  isConnectable: boolean;
+}
+
 type PanelNodeType = {
   id: string;
   IconComponent: React.ElementType;
   title: string;
   settings: SettingType[];
   data: MessageDataType;
-  component: React.ElementType;
+  component: React.ComponentType<MessageNodeProps>;
 };
-
-interface MessageNodeProps {
-  data: MessageDataType;
-  isConnectable: boolean;
-}
 
 export type {
   SettingType,

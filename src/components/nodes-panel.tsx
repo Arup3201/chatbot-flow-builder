@@ -1,6 +1,6 @@
 import { useDraggable } from "@dnd-kit/core";
 import { NODES } from "./nodes";
-import type { PanelNodeProps } from "../types/panel-node";
+import type { DraggablePanelNodeProps, PanelNodeProps } from "../types/panel-nodes";
 import { cn } from "@/lib/utils";
 
 const NodesPanel = () => {
@@ -23,7 +23,7 @@ const DraggablePanelNode = ({
   type,
   IconComponent,
   title,
-}: PanelNodeProps) => {
+}: DraggablePanelNodeProps) => {
   const { setNodeRef, attributes, listeners } = useDraggable({
     id,
     data: {
@@ -44,7 +44,7 @@ const DraggablePanelNode = ({
   );
 };
 
-const PanelNode = ({ IconComponent, title, overlay = false, ...props }) => {
+const PanelNode = ({ IconComponent, title, overlay = false, ...props }: PanelNodeProps) => {
   return (
     <div
       {...props}

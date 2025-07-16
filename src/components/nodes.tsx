@@ -1,9 +1,9 @@
 import { memo } from "react";
-import { Handle, Position } from "@xyflow/react";
+import { Handle, Position, type NodeTypes } from "@xyflow/react";
 import { MessageCircleIcon, MessageCircle } from "lucide-react";
 import type { MessageNodeProps, PanelNodeType } from "../types/nodes";
 
-const MessageNode = memo(({ data, isConnectable }: MessageNodeProps) => {
+const MessageNode: React.FC<MessageNodeProps> = memo(({ data, isConnectable }) => {
   return (
     <>
       <Handle
@@ -52,7 +52,8 @@ const NODES: PanelNodeType[] = [
     component: MessageNode,
   },
 ];
-const nodeTypes = {};
-NODES.reduce((acc, cur) => (acc[cur.id] = cur.component), nodeTypes);
+
+const nodeTypes: NodeTypes = {};
+NODES.forEach((cur) => (nodeTypes[cur.id] = cur.component));
 
 export { MessageNode, NODES, nodeTypes };

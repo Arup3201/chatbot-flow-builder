@@ -21,7 +21,7 @@ const MessageNode = memo(({ data, isConnectable }: MessageNodeProps) => {
           <img src={"whatsapp.svg"} height={14} width={14} />
         </div>
         <div className="p-2 bg-white rounded-b-md text-sm text-gray-800">
-          {data.message}
+          {data.text}
         </div>
       </div>
       <Handle
@@ -39,12 +39,12 @@ const NODES: PanelNodeType[] = [
     id: "message",
     title: "Message",
     data: {
-      message: "Text message",
+      text: "Text message",
     },
     settings: [
       {
-        field: "message",
-        title: "Message",
+        field: "text",
+        title: "Text",
         type: "text",
       },
     ],

@@ -5,7 +5,7 @@ type SettingType = {
 };
 
 type MessageDataType = {
-  message: string;
+  text: string;
 }
 
 type PanelNodeType = {

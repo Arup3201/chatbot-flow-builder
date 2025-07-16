@@ -52,9 +52,8 @@ const FlowBuilder = ({ onDrop, onSettingsSave, ...props }) => {
       />
       {selectedNode ? (
         <SettingsPanel
-          nodeId={selectedNode.id}
+          node={selectedNode}
           settings={NODES.find((node) => node.id === selectedNode.type)?.settings}
-          nodeData={selectedNode.data}
           onClose={() => setSelectedNode(null)}
           onSave={onSettingsSave}
         />

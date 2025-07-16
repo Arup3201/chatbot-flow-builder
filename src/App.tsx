@@ -18,7 +18,7 @@ const initialNodes: Node[] = [
   {
     id: "0",
     type: "message",
-    data: { message: "Text Message" },
+    data: { text: "Text Message" },
     position: { x: 0, y: 50 },
   },
 ];

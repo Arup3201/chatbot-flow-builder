@@ -1,20 +1,21 @@
 import { useState, useEffect } from "react";
 import { X, Save } from "lucide-react";
+import { NODES } from "./nodes";
 
-export default ({ nodeId, settings, onClose, nodeData, onSave }) => {
+export default ({ node, settings, onClose, onSave }) => {
   const [formData, setFormData] = useState({});
   const [hasChanges, setHasChanges] = useState(false);
 
   // Initialize form data with current node data
   useEffect(() => {
-    if (nodeData && settings) {
+    if (node.data && settings) {
       const initialData = {};
       settings.forEach((setting) => {
-        initialData[setting.field] = nodeData[setting.field] || "";
+        initialData[setting.field] = node.data[setting.field] || "";
       });
       setFormData(initialData);
     }
-  }, [nodeData, settings]);
+  }, [node.data, settings]);
 
   // Handle input changes
   const handleInputChange = (field, value) => {
@@ -28,7 +29,7 @@ export default ({ nodeId, settings, onClose, nodeData, onSave }) => {
   // Handle save
   const handleSave = () => {
     if (onSave) {
-      onSave(nodeId, formData, settings);
+      onSave(node.id, formData, settings);
     }
     setHasChanges(false);
   };
@@ -58,7 +59,7 @@ export default ({ nodeId, settings, onClose, nodeData, onSave }) => {
           <textarea
             value={value}
             onChange={(e) => handleInputChange(setting.field, e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+            className="w-full p-2 border border-gray-300 focus:border-transparent"
             placeholder={`Enter ${setting.title.toLowerCase()}...`}
             rows={3}
           />
@@ -70,7 +71,7 @@ export default ({ nodeId, settings, onClose, nodeData, onSave }) => {
             type="number"
             value={value}
             onChange={(e) => handleInputChange(setting.field, e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full p-2 border border-gray-300 focus:border-transparent"
             placeholder={`Enter ${setting.title.toLowerCase()}...`}
           />
         );
@@ -81,7 +82,7 @@ export default ({ nodeId, settings, onClose, nodeData, onSave }) => {
             type="text"
             value={value}
             onChange={(e) => handleInputChange(setting.field, e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full p-2 border border-gray-300 focus:border-transparent"
             placeholder={`Enter ${setting.title.toLowerCase()}...`}
           />
         );
@@ -107,7 +108,7 @@ export default ({ nodeId, settings, onClose, nodeData, onSave }) => {
       <div className="border-l-2 border-l-gray-200">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
-          <h3 className="text-lg font-semibold text-gray-900">Node Settings</h3>
+          <h3 className="text-lg font-semibold text-gray-900">{NODES.find(nd => nd.id===node.type)?.title}</h3>
           <button
             onClick={handleClose}
             className="text-gray-400 hover:text-gray-600 transition-colors"
